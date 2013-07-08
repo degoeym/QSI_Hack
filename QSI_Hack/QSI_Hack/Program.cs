@@ -8,7 +8,10 @@ using System.IO;
 namespace QSI_Hack
 {
     class Program
-    {   
+    {
+        static string success = "11";
+        static string failure = "01";
+        
         static void Main(string[] args)
         {
             string letters = checkLetter();
@@ -24,39 +27,7 @@ namespace QSI_Hack
             Console.Read();
         }
 
-        public static string WebResponse(char keyValue)
-        {
-            WebRequest req = WebRequest.Create(String.Concat("http://simple-snow-3171.herokuapp.com/?key=", keyValue));
-            WebResponse resp = req.GetResponse();
-            StreamReader sr = new StreamReader(resp.GetResponseStream());
-
-            string html = sr.ReadToEnd();
-
-            html = new string((from c in html
-                               where char.IsNumber(c)
-                               select c
-                               ).ToArray());
-
-            return html;
-        }
-
-        public static string WebResponse(int keyValue)
-        {
-            WebRequest req = WebRequest.Create(String.Concat("http://simple-snow-3171.herokuapp.com/?key=", keyValue));
-            WebResponse resp = req.GetResponse();
-            StreamReader sr = new StreamReader(resp.GetResponseStream());
-
-            string html = sr.ReadToEnd();
-
-            html = new string((from c in html
-                               where char.IsNumber(c)
-                               select c
-                               ).ToArray());
-
-            return html;
-        }
-
-        public static string WebResponse(string keyValue)
+        public static string WebResponse(object keyValue)
         {
             WebRequest req = WebRequest.Create(String.Concat("http://simple-snow-3171.herokuapp.com/?key=", keyValue));
             WebResponse resp = req.GetResponse();
@@ -79,11 +50,11 @@ namespace QSI_Hack
             
             while (c <= 'Z')
             {
-                if (WebResponse(c) == "11" || WebResponse(c) == "01")
+                if (WebResponse(c) == success || WebResponse(c) == failure)
                 {
                     keyLetters += c;
                 }
-                else if (WebResponse(Char.ToLower(c)) == "11" || WebResponse(Char.ToLower(c)) == "01")
+                else if (WebResponse(Char.ToLower(c)) == success || WebResponse(Char.ToLower(c)) == failure)
                 {
                     keyLetters += Char.ToLower(c);
                 }
@@ -101,7 +72,7 @@ namespace QSI_Hack
 
             while (n <= 9)
             {
-                if (WebResponse(n) == "11" || WebResponse(n) == "01")
+                if (WebResponse(n) == success || WebResponse(n) == failure)
                 {
                     keyNumbers += n;
                 }
