@@ -50,11 +50,14 @@ namespace QSI_Hack
             
             while (c <= 'Z')
             {
-                if (WebResponse(c) == success || WebResponse(c) == failure)
+                string upper = WebResponse(c);
+                string lower = WebResponse(Char.ToLower(c));
+
+                if (upper == success || upper == failure)
                 {
                     keyLetters += c;
                 }
-                else if (WebResponse(Char.ToLower(c)) == success || WebResponse(Char.ToLower(c)) == failure)
+                else if (lower == success || lower == failure)
                 {
                     keyLetters += Char.ToLower(c);
                 }
@@ -72,7 +75,9 @@ namespace QSI_Hack
 
             while (n <= 9)
             {
-                if (WebResponse(n) == success || WebResponse(n) == failure)
+                string number = WebResponse(n);
+                
+                if (number == success || number == failure)
                 {
                     keyNumbers += n;
                 }
