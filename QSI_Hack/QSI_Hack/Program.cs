@@ -1,16 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Net;
 using System.IO;
+using System.Linq;
+using System.Net;
 
 namespace QSI_Hack
 {
     class Program
     {
         static string success = "11";
-        static string failure = "01";
+        static string possible = "01";
         
         static void Main(string[] args)
         {
@@ -27,6 +26,7 @@ namespace QSI_Hack
             Console.Read();
         }
 
+        #region Web Response
         public static string WebResponse(object keyValue)
         {
             WebRequest req = WebRequest.Create(String.Concat("http://simple-snow-3171.herokuapp.com/?key=", keyValue));
@@ -41,23 +41,25 @@ namespace QSI_Hack
                                ).ToArray());
 
             return html;
-        }
+        } 
+        #endregion
 
+        #region Character Checking
         public static string checkLetter()
         {
             string keyLetters = null;
             char c = 'A';
-            
+
             while (c <= 'Z')
             {
                 string upper = WebResponse(c);
                 string lower = WebResponse(Char.ToLower(c));
 
-                if (upper == success || upper == failure)
+                if (upper == success || upper == possible)
                 {
                     keyLetters += c;
                 }
-                else if (lower == success || lower == failure)
+                else if (lower == success || lower == possible)
                 {
                     keyLetters += Char.ToLower(c);
                 }
@@ -76,8 +78,8 @@ namespace QSI_Hack
             while (n <= 9)
             {
                 string number = WebResponse(n);
-                
-                if (number == success || number == failure)
+
+                if (number == success || number == possible)
                 {
                     keyNumbers += n;
                 }
@@ -86,12 +88,14 @@ namespace QSI_Hack
             }
 
             return keyNumbers;
-        }
+        } 
+        #endregion
 
+        #region Make the Key
         public static string makeKey(Queue<char> possibleKey)
         {
             string fullKey = null;
-            
+
             while (possibleKey.Count != 0)
             {
                 char possibleCharacter = possibleKey.Dequeue();
@@ -108,6 +112,7 @@ namespace QSI_Hack
             }
 
             return fullKey;
-        }
+        } 
+        #endregion
     }
 }
