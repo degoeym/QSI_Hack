@@ -29,11 +29,9 @@ namespace QSI_Hack
         #region Web Response
         public static string WebResponse(object keyValue)
         {
-            WebRequest req = WebRequest.Create(String.Concat("http://simple-snow-3171.herokuapp.com/?key=", keyValue));
-            WebResponse resp = req.GetResponse();
-            StreamReader sr = new StreamReader(resp.GetResponseStream());
+            WebClient client = new WebClient();
 
-            string html = sr.ReadToEnd();
+            string html = client.DownloadString(String.Concat("http://simple-snow-3171.herokuapp.com/?key=", keyValue));
 
             html = new string((from c in html
                                where char.IsNumber(c)
